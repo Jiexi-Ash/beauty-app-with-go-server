@@ -28,6 +28,20 @@ rather than consuming one.
 Same product, two different backend philosophies — this repo is the "build it yourself"
 half of that pair.
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Home page](docs/screenshots/01-home.jpg) | ![Explore salons](docs/screenshots/02-explore.jpg) |
+| Home | Explore salons |
+| ![Salon profile](docs/screenshots/03-salon-detail.jpg) | ![Booking flow](docs/screenshots/04-booking.jpg) |
+| Salon profile | Booking — real slot availability, computed server-side in the salon's own timezone |
+| ![Owner dashboard overview](docs/screenshots/05-dashboard.jpg) | ![Service management](docs/screenshots/06-dashboard-services.jpg) |
+| Owner dashboard overview | Service management — pricing, duration, visibility toggle |
+
+All screenshots are of the live app against the running Go API and seeded demo data —
+nothing mocked.
+
 ## Architecture
 
 ```
