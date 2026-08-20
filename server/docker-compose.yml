@@ -1,0 +1,52 @@
+services:
+  # top-level key — everything Compose manages lives under here
+
+  go-api:
+
+    # name of this service — other containers on the same
+    # compose network can reach it at http://go-api:<port>
+
+    build: ./go-api
+    # build an image from the Dockerfile in this folder
+    # (compose looks for ./go-api/Dockerfile by default)
+
+    ports:
+      - "8080:8080"
+      # "host:container" — maps port 8080 on your machine
+      # to port 8080 inside the container (same as -p flag
+      # with docker run)
+    environment:
+        DATABASE_URL: ${DATABASE_URL}
+        JWT_SECRET:  ${JWT_SECRET}
+        APP_ENV: ${APP_ENV}
+        GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+        S3_REGION: ${S3_REGION}
+        S3_BUCKET: ${S3_BUCKET}
+        S3_CF_DISTRO: ${S3_CF_DISTRO}
+        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+
+
+  postgres:
+    image: postgres:18.4-alpine
+    # official Postgres image, alpine variant for smaller size
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      # read by postgres image's startup script —
+      # creates this user/db automatically on first run
+
+    
+    ports:
+      - "5433:5432"
+      # host 5433 avoids conflict with a local/Windows Postgres on 5432
+      # (WSL localhost:5432 often forwards to Windows, not this container)
+
+    volumes:
+      - pgdata:/var/lib/postgressql/data
+      # persists data outside the container lifecycle —
+      # without this, `docker compose down` wipes your data
+volumes:
+  pgdata:

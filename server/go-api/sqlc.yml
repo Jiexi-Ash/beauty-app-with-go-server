@@ -1,0 +1,21 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "internal/db/queries"
+    # where you'll write hand-written .sql query files
+
+    schema: "internal/db/migrations"
+    # sqlc reads your goose migrations to understand table structure
+    # (columns, types, constraints) — no separate schema file needed
+
+    gen:
+      go:
+        package: "db"
+        # generated Go code will live in package "db"
+
+        out: "internal/db/sqlc"
+        # output directory for generated .go files
+
+        sql_package: "pgx/v5"
+        # tells sqlc to generate code using pgx (matches what we
+        # already installed), not database/sql

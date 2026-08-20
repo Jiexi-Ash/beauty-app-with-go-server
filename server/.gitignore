@@ -1,0 +1,19 @@
+.env
+
+# compiled binaries
+go-api/server
+*.exe
+
+# IDE (Cursor / VS Code)
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# sqlc-generated code (DO NOT EDIT) — regenerate with `sqlc generate`
+go-api/internal/db/sqlc/
+
+# local curl cookie jars from manual testing
+cookies.txt
+rt.txt
