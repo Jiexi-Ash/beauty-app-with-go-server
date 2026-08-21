@@ -12,6 +12,11 @@
     
     COPY . .
     # now copy the rest of the source code
+
+    RUN apk add --no-cache curl && \
+    curl -L https://github.com/sqlc-dev/sqlc/releases/download/v1.31.1/sqlc_1.31.1_linux_amd64.tar.gz | tar xz -C /usr/local/bin sqlc
+
+    RUN sqlc generate
     
     RUN CGO_ENABLED=0 GOOS=linux go build -o /server ./main.go
     # compile to a static binary
