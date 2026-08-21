@@ -236,6 +236,9 @@ func (a *Application) computeAvailableSlots(ctx context.Context, salonID pgtype.
 	interval := serviceDuration
 	noStaffRequested := !staffID.Valid
 
+	// A booking may start before close, even if it finishes after, when
+	// allow_booking_beyond_close_time is enabled. It may never start after
+	// close, either way.
 	loopEnd := closeDateTime
 	if !salonSettings.AllowBookingBeyondCloseTime {
 		loopEnd = closeDateTime.Add(-serviceDuration)

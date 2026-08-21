@@ -11,27 +11,27 @@ import (
 // a logger, JWT secret, config values, etc.
 
 type Application struct {
-	Pool             *pgxpool.Pool
-	Queries          *db.Queries
-	jwtSecret        string
-	Environment      string
-	GoogleMapsAPIKey string
-	s3Region         string
-	s3Bucket         string
-	s3CFDistro       string
-	awsUserKey       string
-	awsUserSecret    string
+	Pool               *pgxpool.Pool
+	Queries            *db.Queries
+	jwtSecret          string
+	Environment        string
+	GoogleMapsAPIKey   string
+	s3Region           string
+	s3Bucket           string
+	s3CFDistro         string
+	CORSAllowedOrigins string
 }
 
-func New(pool *pgxpool.Pool, jwtSecret, environment, googleMapsAPIKey, s3Region, s3Bucket, s3CFDistro string) *Application {
+func New(pool *pgxpool.Pool, jwtSecret, environment, googleMapsAPIKey, s3Region, s3Bucket, s3CFDistro, CORSAllowedOrigins string) *Application {
 	return &Application{
-		Pool:             pool,
-		Queries:          db.New(pool),
-		jwtSecret:        jwtSecret,
-		Environment:      environment,
-		GoogleMapsAPIKey: googleMapsAPIKey,
-		s3Region:         s3Region,
-		s3Bucket:         s3Bucket,
-		s3CFDistro:       s3CFDistro,
+		Pool:               pool,
+		Queries:            db.New(pool),
+		jwtSecret:          jwtSecret,
+		Environment:        environment,
+		GoogleMapsAPIKey:   googleMapsAPIKey,
+		s3Region:           s3Region,
+		s3Bucket:           s3Bucket,
+		s3CFDistro:         s3CFDistro,
+		CORSAllowedOrigins: CORSAllowedOrigins,
 	}
 }

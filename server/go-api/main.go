@@ -16,6 +16,11 @@ func main() {
 	app_env := os.Getenv("APP_ENV")
 	googleMapsAPIKey := os.Getenv("GOOGLE_MAPS_API_KEY")
 
+	corsAllowedOrigins := os.Getenv("CORS_ALLOWED_ORIGINS")
+	if corsAllowedOrigins == "" {
+		log.Println("WARNING: CORS_ALLOWED_ORIGINS not set — no browser-based frontend will be able to call this API")
+	}
+
 	if app_env == "" {
 		app_env = "production"
 	}
@@ -50,7 +55,7 @@ func main() {
 
 	defer pool.Close()
 
-	application := app.New(pool, jwtSecret, app_env, googleMapsAPIKey, s3Region, s3Bucket, s3CFDistro)
+	application := app.New(pool, jwtSecret, app_env, googleMapsAPIKey, s3Region, s3Bucket, s3CFDistro, corsAllowedOrigins)
 
 	router := http.NewServeMux()
 	router.HandleFunc("GET /health", application.Health)
@@ -106,7 +111,7 @@ func main() {
 	router.Handle("POST /bookings", application.RequireAuth(http.HandlerFunc(application.CreateBooking)))
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: router,
+		Handler: application.CORSMiddleware(router),
 	}
 
 	log.Println("server starting on :8080")

@@ -93,3 +93,32 @@ func GetUserID(r *http.Request) (string, bool) {
 
 	return userID, true
 }
+
+func (a *Application) CORSMiddleware(next http.Handler) http.Handler {
+	allowedOrigins := map[string]bool{}
+	for _, origin := range strings.Split(a.CORSAllowedOrigins, ",") {
+		trimmed := strings.TrimSpace(origin)
+		if trimmed != "" {
+			allowedOrigins[trimmed] = true
+		}
+	}
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+
+		if allowedOrigins[origin] {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+		}
+
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
