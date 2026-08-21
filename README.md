@@ -1,5 +1,7 @@
 # Beauty App — Go Server Edition
 
+**Live demo:** https://demo.thebeautyapp.co.za
+
 A salon discovery and booking platform: customers find salons, view services, and book
 appointments; salon owners onboard their business, manage services/hours/pricing, and
 track bookings from a dashboard.
